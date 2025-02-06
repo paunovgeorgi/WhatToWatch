@@ -163,3 +163,25 @@
     display: none;
   }
 }
+
+.selectables{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.selectable{
+  @apply bg-dark-100 text-white border border-page-purple rounded p-2 shadow-light-100/10
+}
+
+.movie-poster {
+  transition: transform 0.3s ease;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0));
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0));
+}
+
+.movie-poster:hover {
+  transform: scale(1.1);
+}

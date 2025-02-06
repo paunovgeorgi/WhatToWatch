@@ -7,7 +7,7 @@ const Rating = ({ rating, setRating }) => {
     <select
       value={rating}
       onChange={(e) => setRating(e.target.value)}
-      className="bg-gray-800 text-white border border-page-purple rounded p-2 shadow-light-100/10"
+      className="selectable"
     >
       <option value="">Select Rating</option>
       {ratings.map((rate) => (
