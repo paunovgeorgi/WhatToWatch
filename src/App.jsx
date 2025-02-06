@@ -5,6 +5,7 @@ import Spinner from './components/Spinner';
 import MovieCard from './components/MovieCard';
 import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
+import Genres from './components/Genres';
 
 const API_BASE_URL="https://api.themoviedb.org/3";
 
@@ -26,8 +27,26 @@ const App = () => {
   const [movieList, setMovieList] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [genres, setGenres] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState('');
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
+
+  const fetchGenres = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/genre/movie/list?language=en`, API_OPTIONS);
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch genres');
+      }
+
+      const data = await response.json();
+      setGenres(data.genres || []);
+
+    } catch (error) {
+      console.error(`error fetching genres: ${error}`);
+    }
+  };
 
   const fetchMovies = async (query = '') => {
     setIsLoading(true);
@@ -36,7 +55,7 @@ const App = () => {
     try {
       const endpoint = query ? 
       `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}` :
-      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&with_genres=${selectedGenre}`;
       const response = await fetch(endpoint, API_OPTIONS);
       
       if(!response.ok){
@@ -78,10 +97,11 @@ const App = () => {
   
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm])
+  }, [debouncedSearchTerm, selectedGenre])
 
   useEffect(() => {
     loadTrendingMovies();
+    fetchGenres();
   }, [])
 
   return(
@@ -92,6 +112,10 @@ const App = () => {
             <img src="./wtw-logo.png" alt="" />
             <h1>Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle</h1>
             <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+            <div className="selectables">
+              <Genres genres={genres} selectedGenre={selectedGenre} setSelectedGenre={setSelectedGenre}/>
+
+            </div>
           </header>
 
           {trendingMovies.length > 0 && (
