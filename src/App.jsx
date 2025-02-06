@@ -117,6 +117,8 @@ const App = () => {
     setPage(1);
   }, [selectedGenre, rating, year]);
 
+
+
   return(
     <main>
       <div className="pattern">
@@ -163,7 +165,7 @@ const App = () => {
             )}
 
             <div className="pagination">
-              <Pagination page={page} totalPages={totalPages} setPage={handlePageChange}/>
+              <Pagination page={page} totalPages={totalPages} setPage={setPage}/>
             </div>
 
             {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
