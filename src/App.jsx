@@ -8,6 +8,7 @@ import { getTrendingMovies, updateSearchCount } from './appwrite';
 import Genres from './components/Genres';
 import Rating from './components/Rating';
 import Year from './components/Year';
+import Pagination from './components/Pagination';
 
 const API_BASE_URL="https://api.themoviedb.org/3";
 
@@ -33,6 +34,8 @@ const App = () => {
   const [selectedGenre, setSelectedGenre] = useState('');
   const [rating, setRating] = useState('');
   const [year, setYear] = useState('');
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
 
@@ -58,8 +61,8 @@ const App = () => {
   
     try {
       const endpoint = query ? 
-      `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}` :
-      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&with_genres=${selectedGenre}&vote_average.gte=${rating}&primary_release_year=${year}`;
+      `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}&page=${page}` :
+      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&with_genres=${selectedGenre}&vote_average.gte=${rating}&primary_release_year=${year}&page=${page}`;
       const response = await fetch(endpoint, API_OPTIONS);
       
       if(!response.ok){
@@ -73,6 +76,8 @@ const App = () => {
         setMovieList([]);
         return;
       }
+
+      setTotalPages(data.total_pages < 100 ? data.total_pages : 100);
 
       setMovieList(data.results || []);
 
@@ -101,12 +106,16 @@ const App = () => {
   
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm, selectedGenre, rating, year])
+  }, [debouncedSearchTerm, selectedGenre, rating, year, page])
 
   useEffect(() => {
     loadTrendingMovies();
     fetchGenres();
   }, [])
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedGenre, rating, year]);
 
   return(
     <main>
@@ -148,10 +157,16 @@ const App = () => {
             ) : (
               <ul>
                 {movieList.map((movie) => (
-                  <p key={movie.id} className="text-white"><MovieCard movie={movie}/></p>
+                  <MovieCard key={movie.id} movie={movie}/>
                 ))}
               </ul>
             )}
+
+            <div className="pagination">
+              <Pagination page={page} totalPages={totalPages} setPage={handlePageChange}/>
+            </div>
+
+            {errorMessage && <p className='text-red-500'>{errorMessage}</p>}
           </section>
         </div>
       </div>
