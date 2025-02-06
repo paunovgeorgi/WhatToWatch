@@ -5,7 +5,7 @@ const Genres = ({ genres, selectedGenre, setSelectedGenre }) => {
     <select
       value={selectedGenre}
       onChange={(e) => setSelectedGenre(e.target.value)}
-      className="bg-gray-800 text-white border border-gray-600 rounded p-2"
+      className="bg-gray-800 text-white border border-page-purple rounded p-2 shadow-light-100/10"
     >
       <option value="">Select Genre</option>
       {genres.map((genre) => (
