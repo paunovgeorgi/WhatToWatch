@@ -7,6 +7,7 @@ import { useDebounce } from 'react-use';
 import { getTrendingMovies, updateSearchCount } from './appwrite';
 import Genres from './components/Genres';
 import Rating from './components/Rating';
+import Year from './components/Year';
 
 const API_BASE_URL="https://api.themoviedb.org/3";
 
@@ -31,6 +32,7 @@ const App = () => {
   const [genres, setGenres] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState('');
   const [rating, setRating] = useState('');
+  const [year, setYear] = useState('');
 
   useDebounce(() => setDebouncedSearchTerm(searchTerm), 1000, [searchTerm]);
 
@@ -57,7 +59,7 @@ const App = () => {
     try {
       const endpoint = query ? 
       `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}` :
-      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&with_genres=${selectedGenre}&vote_average.gte=${rating}`;
+      `${API_BASE_URL}/discover/movie?sort_by=popularity.desc&with_genres=${selectedGenre}&vote_average.gte=${rating}&primary_release_year=${year}`;
       const response = await fetch(endpoint, API_OPTIONS);
       
       if(!response.ok){
@@ -99,7 +101,7 @@ const App = () => {
   
   useEffect(() => {
     fetchMovies(debouncedSearchTerm);
-  }, [debouncedSearchTerm, selectedGenre, rating])
+  }, [debouncedSearchTerm, selectedGenre, rating, year])
 
   useEffect(() => {
     loadTrendingMovies();
@@ -117,6 +119,7 @@ const App = () => {
             <div className="selectables">
               <Genres genres={genres} selectedGenre={selectedGenre} setSelectedGenre={setSelectedGenre}/>
               <Rating rating={rating} setRating={setRating}/>
+              <Year year={year} setYear={setYear}/>
             </div>
           </header>
 
