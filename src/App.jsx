@@ -77,9 +77,15 @@ const App = () => {
         return;
       }
 
+      const moviesWithExternalIds = await Promise.all(data.results.map(async (movie) => {
+        const externalIdsResponse = await fetch(`${API_BASE_URL}/movie/${movie.id}/external_ids`, API_OPTIONS);
+        const externalIds = await externalIdsResponse.json();
+        return { ...movie, imdb_id: externalIds.imdb_id };
+      }));
+
       setTotalPages(data.total_pages < 100 ? data.total_pages : 100);
 
-      setMovieList(data.results || []);
+      setMovieList(moviesWithExternalIds || []);
 
       if (query && data.results.length > 0) {
         await updateSearchCount(query, data.results[0]);
