@@ -123,6 +123,13 @@ const App = () => {
     setPage(1);
   }, [selectedGenre, rating, year]);
 
+  useEffect(() => {
+    const section = document.getElementById('all-movies-section');
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [page]);
+
 
 
   return(
@@ -155,7 +162,7 @@ const App = () => {
           </section>
         )}
 
-          <section className="all-movies">
+          <section id='all-movies-section' className="all-movies">
             <h2>All Movies</h2>
 
             {isLoading ? (
