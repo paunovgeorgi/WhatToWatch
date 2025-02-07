@@ -166,6 +166,7 @@
 
 .selectables{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -184,4 +185,11 @@
 
 .movie-poster:hover {
   transform: scale(1.1);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  margin-top: 20px;
 }
