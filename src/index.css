@@ -193,3 +193,7 @@
   align-items: end;
   margin-top: 20px;
 }
+
+.pagination button:hover {
+  @apply bg-page-purple transition duration-300 ease-initial;
+}
