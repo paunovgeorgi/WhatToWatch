@@ -19,7 +19,7 @@
 -   **Rating** (e.g., only movies rated 7+)
 -   **Year** (Find movies from a specific year)
  
-✅ **Pagination** -- Easily navigate through large movie lists.
+✅ **Pagination** -- Easily navigate through large movie lists.\
 ✅ **IMDB Links** -- Each movie directly links to its IMDb profile for more details.
 
 🚀 Tech Stack
