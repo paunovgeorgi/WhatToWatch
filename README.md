@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="public/wtw-logo-3.png" alt="WhatToWatch logo" title="WhatToWatch Logo">
+</p>
+
 🎬 WhatToWatch
 ==============
 
